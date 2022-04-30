@@ -42,19 +42,27 @@ void main(List<String> arguments) {
 
   print(fpo.toDouble(tfp3));
 
+  String namespace = "flafy";
   String code = """
-    int main(fixed2 a) {
-      int x = "2";
-      // int y = 2;
-      // x = x + 1;
-      // int z = x*y+2/1;
-      // int h = 4*asd(2, 4.00, z)+2/y;
-      // print(x*3+y);
-      return 123;
+    // int sum(int a, int b, int c) {
+    //   return a + b + c;
+    // }
+    void main() {
+      // int h = sum(1*32,2*1,3/3);
+      (123);
+      // if (h == 1) {
+
+      // }
     }
     """;
 
-  print(compile(code));
+  var compiler = Compiler(namespace);
+  compiler.addCode(code);
+
+  compiler.resultedFiles.forEach((key, value) {
+    print("FILE: $key");
+    print(value);
+  });
 //   var code = """
 // 232 + 5 * (3 + 2 * 21) ^ 3 * 2
 // """;

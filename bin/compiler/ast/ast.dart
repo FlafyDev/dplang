@@ -7,6 +7,8 @@ import 'function_declaration.dart' as dp_ast;
 List<dp_ast.FunctionDeclaration> parseString(String code) {
   final ast = dart_ast.parseString(content: code);
 
+  inspect(ast);
+
   final List<dp_ast.FunctionDeclaration> functionDeclarations = [];
 
   for (final functionDeclaration

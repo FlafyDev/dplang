@@ -5,19 +5,49 @@ import 'ast/ast.dart';
 import 'ast/statements.dart';
 import 'function_compiler.dart';
 
-String compile(String code) {
-  final functions = parseString(code);
+class Compiler {
+  final String namespace;
+  final String objectiveName;
+  final Map<String, String> resultedFiles = {};
 
-  inspect(functions);
+  Compiler(this.namespace) : objectiveName = "_$namespace.values";
 
-  String newCode = "";
+  void addCode(String code) {
+    List<CompiledFunction> compiledFunctions = [];
 
-  newCode += createObjective("values");
-  var functionCompiler = FunctionCompiler(functions.first, "values");
-  var compiledFunction = functionCompiler.compile();
-  newCode += compiledFunction.code;
+    for (var function in parseString(code)) {
+      var functionCompiler = FunctionCompiler(
+        function,
+        objectiveName,
+        compiledFunctions,
+      );
+      var compiledFunction = functionCompiler.compile();
+      compiledFunction.filePath =
+          FunctionFilePath(namespace, [compiledFunction.methodName]);
 
-  print(compiledFunction.returned.name);
+      resultedFiles[compiledFunction.filePath.toString()] =
+          compiledFunction.code;
 
-  return newCode;
+      // TODO children function.
+
+      compiledFunctions.add(compiledFunction);
+    }
+  }
 }
+
+// String compile(String namespace, String code) {
+//   final functions = parseString(code);
+
+//   for (var function in functions) {
+//     var functionCompiler = FunctionCompiler(
+//       function,
+//       "values",
+//       compiledFunctions,
+//     );
+
+//     compiledFunctions.add(functionCompiler.compile());
+//     newCode += "\n\n" + compiledFunctions.last.code;
+//   }
+
+//   return newCode;
+// }

@@ -15,5 +15,6 @@ dev_dependencies:
 dependencies: 
   analyzer: ^3.4.1
   collection: ^1.16.0
+  color: ^3.0.0
   math_expressions: ^2.3.0
   nanoid: ^1.0.0

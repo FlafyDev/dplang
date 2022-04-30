@@ -47,11 +47,53 @@ String createObjective(String name) {
   return "scoreboard objectives add $name dummy\n";
 }
 
+class FunctionFilePath {
+  String namespace;
+  List<String> path;
+  FunctionFilePath(this.namespace, this.path);
+
+  @override
+  String toString() {
+    return "$namespace:${path.join("/")}.mcfunction";
+  }
+}
+
+String callFunction(FunctionFilePath path) {
+  return "function ${path.namespace}:${path.path.join("/")}";
+}
+
+class TellrawStyle {
+  bool bold = false;
+  bool italic = false;
+  bool underlined = false;
+  bool strikeThrough = false;
+  bool obfuscated = false;
+  Color color;
+  String font = "minecraft:default";
+  
+}
+
+abstract class TellrawParameter {
+  Map<String, dynamic> values = 
+
+  @override
+  String toString() {
+    return values.toString();
+  }
+}
+
+class TellrawText extends TellrawParameter {
+  String text;
+  TellrawText(this.text);
+}
+
+String tellraw(List<TellrawParameter> params) {}
+
 class Score {
   String name;
   String objective;
   ValueType? type;
-  Score(this.name, this.objective);
+  Score(this.name, this.objective, [this.type]);
 
   setValue(String value) {
     return "scoreboard players set $name $objective $value\n";
@@ -62,6 +104,7 @@ class Score {
   }
 
   setValueFromScore(Score score) {
+    type = score.type;
     return _operation(score, "=");
   }
 
